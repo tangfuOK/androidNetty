@@ -1,5 +1,7 @@
 package com.cclx.mobile.b_server.utils;
 
+import android.graphics.Bitmap;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -28,6 +30,14 @@ public class Server {
         if (serverClients != null && !serverClients.isEmpty()) {
             for (ServerClient client : serverClients) {
                 client.sendMessage(msg);
+            }
+        }
+    }
+
+    public void sendImage(Bitmap bitmap) {
+        if (serverClients != null && !serverClients.isEmpty()) {
+            for (ServerClient client : serverClients) {
+                client.sendImage(bitmap);
             }
         }
     }

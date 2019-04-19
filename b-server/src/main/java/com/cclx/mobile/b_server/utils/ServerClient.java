@@ -46,6 +46,7 @@ public class ServerClient extends Thread {
                 try {
                     byte[] bytes = msg.getBytes();
                     byte[] lenByte = BytesUtils.int2ByteArray(bytes.length);
+                    out.write((byte) 0xA1);
                     out.write(lenByte);
                     out.write(bytes);
                     out.flush();

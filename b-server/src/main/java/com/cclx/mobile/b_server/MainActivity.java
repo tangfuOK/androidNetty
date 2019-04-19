@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            server.sendMsg(String.valueOf(new Random().nextInt(100)));
+            server.sendMsg("随机数字是" + new Random().nextInt(100) + "【服务端发送】");
             handler.postDelayed(runnable, 5000);
         }
     };

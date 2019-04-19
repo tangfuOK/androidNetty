@@ -1,16 +1,21 @@
 package com.cclx.mobile.b_client;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_layout);
+        imageView = (ImageView) findViewById(R.id.imageView);
 
         new Thread(new Runnable() {
             @Override
@@ -19,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onMessage(String str) {
                         showMessage(str);
+                    }
+
+                    @Override
+                    public void onImage(Bitmap bitmap) {
+                        imageView.setImageBitmap(bitmap);
                     }
                 }).start();
             }

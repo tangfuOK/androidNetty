@@ -46,7 +46,7 @@ public class ServerClient extends Thread {
                 try {
                     byte[] bytes = msg.getBytes();
                     byte[] lenByte = BytesUtils.int2ByteArray(bytes.length);
-                    out.write((byte) 0xA1);
+                    out.write(BytesUtils.int2ByteArray(1));
                     out.write(lenByte);
                     out.write(bytes);
                     out.flush();
@@ -63,10 +63,13 @@ public class ServerClient extends Thread {
             public void run() {
                 try {
                     byte[] outdata = transImage(bitmap, 640, 480);
+                    if (outdata == null || outdata.length == 0) {
+                        return;
+                    }
                     int datalen = outdata.length;
-                    out.write((byte) 0xA0);
+                    out.write(BytesUtils.int2ByteArray(2));
                     out.write(BytesUtils.int2ByteArray(datalen));
-                    out.write(outdata, 0, datalen);
+                    out.write(outdata);
                     out.flush();
                     if (!bitmap.isRecycled()) {
                         bitmap.recycle();

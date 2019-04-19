@@ -109,24 +109,31 @@ public class MainActivity extends AppCompatActivity {
             String imageStr = Base64.encodeToString(imageBytes, Base64.NO_WRAP | Base64.URL_SAFE);
             Log.d("123", "imageBase64:" + imageStr);
 
-            final Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            if (bitmap != null) {
+            final Bitmap[] bitmap = {BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length)};
+            if (bitmap[0] != null) {
                 try {
                     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(getExternalFilesDir(null) + "pic.jpg"));// /sdcard/Android/data/com.things.thingssocket/filespic.jpg
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                    bitmap[0].compress(Bitmap.CompressFormat.JPEG, 100, bos);
                     bos.flush();
                     bos.close();
+                    bitmap[0].recycle();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                final Bitmap bitmaps = BitmapFactory.decodeFile(getExternalFilesDir(null) + "pic.jpg");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        server.sendImage(bitmaps);
+                    }
+                }).start();
+                new Handler(getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageView.setImageBitmap(bitmaps);
+                    }
+                });
             }
-            new Handler(getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    imageView.setImageBitmap(bitmap);
-                    server.sendImage(bitmap);
-                }
-            });
         }
     }
 

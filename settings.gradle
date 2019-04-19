@@ -1,2 +1,2 @@
-include ':app', ':client'
+include ':app', ':client', ':b-server', ':b-client'
 rootProject.name='hb-connect'
